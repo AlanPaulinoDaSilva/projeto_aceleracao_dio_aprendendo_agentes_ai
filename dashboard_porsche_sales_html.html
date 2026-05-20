@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard Porsche Analytics</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-slate-950 text-white min-h-screen">
+  <div class="flex min-h-screen">
+    <!-- Sidebar -->
+    <aside class="w-72 bg-slate-900 border-r border-slate-800 p-6 hidden lg:block">
+      <div class="flex items-center gap-3 mb-10">
+        <div class="w-12 h-12 rounded-2xl bg-yellow-500 flex items-center justify-center text-black font-bold text-xl">
+          P
+        </div>
+        <div>
+          <h1 class="text-2xl font-bold">Porsche BI</h1>
+          <p class="text-slate-400 text-sm">Sales Dashboard</p>
+        </div>
+      </div>
+
+      <nav class="space-y-3">
+        <button class="w-full text-left px-4 py-3 rounded-2xl bg-yellow-500 text-black font-semibold shadow-lg">
+          Dashboard Geral
+        </button>
+        <button class="w-full text-left px-4 py-3 rounded-2xl bg-slate-800 hover:bg-slate-700 transition">
+          Vendas
+        </button>
+        <button class="w-full text-left px-4 py-3 rounded-2xl bg-slate-800 hover:bg-slate-700 transition">
+          Modelos
+        </button>
+        <button class="w-full text-left px-4 py-3 rounded-2xl bg-slate-800 hover:bg-slate-700 transition">
+          Performance
+        </button>
+        <button class="w-full text-left px-4 py-3 rounded-2xl bg-slate-800 hover:bg-slate-700 transition">
+          Relatórios
+        </button>
+      </nav>
+
+      <div class="mt-12 p-5 rounded-3xl bg-gradient-to-br from-yellow-500 to-orange-600 text-black">
+        <h2 class="font-bold text-lg mb-2">Análise Premium</h2>
+        <p class="text-sm opacity-80">
+          Insights avançados sobre vendas, faturamento e performance da equipe.
+        </p>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="flex-1 p-6 lg:p-10 overflow-auto">
+      <!-- Header -->
+      <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-8">
+        <div>
+          <h1 class="text-4xl font-bold">Dashboard de Vendas Porsche</h1>
+          <p class="text-slate-400 mt-2">
+            Visão consolidada das vendas, modelos e desempenho comercial.
+          </p>
+        </div>
+
+        <div class="flex items-center gap-4">
+          <input
+            type="text"
+            placeholder="Buscar cliente ou modelo..."
+            class="bg-slate-900 border border-slate-800 rounded-2xl px-5 py-3 outline-none focus:border-yellow-500 w-full lg:w-80"
+          />
+          <button class="bg-yellow-500 hover:bg-yellow-400 text-black px-5 py-3 rounded-2xl font-semibold transition">
+            Exportar
+          </button>
+        </div>
+      </div>
+
+      <!-- KPIs -->
+      <section class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl">
+          <p class="text-slate-400 mb-2">Faturamento Total</p>
+          <h2 class="text-4xl font-bold">R$ 12,8M</h2>
+          <span class="text-green-400 text-sm">+18.2% este mês</span>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl">
+          <p class="text-slate-400 mb-2">Veículos Vendidos</p>
+          <h2 class="text-4xl font-bold">284</h2>
+          <span class="text-green-400 text-sm">+9.1% crescimento</span>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl">
+          <p class="text-slate-400 mb-2">Ticket Médio</p>
+          <h2 class="text-4xl font-bold">R$ 451K</h2>
+          <span class="text-yellow-400 text-sm">Alta performance</span>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl">
+          <p class="text-slate-400 mb-2">Clientes Entregues</p>
+          <h2 class="text-4xl font-bold">96%</h2>
+          <span class="text-green-400 text-sm">Status excelente</span>
+        </div>
+      </section>
+
+      <!-- Charts -->
+      <section class="grid grid-cols-1 xl:grid-cols-3 gap-6 mb-8">
+        <div class="xl:col-span-2 bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl">
+          <div class="flex items-center justify-between mb-6">
+            <div>
+              <h2 class="text-2xl font-bold">Evolução de Vendas</h2>
+              <p class="text-slate-400">Últimos 12 meses</p>
+            </div>
+          </div>
+          <canvas id="salesChart" height="120"></canvas>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl">
+          <div class="mb-6">
+            <h2 class="text-2xl font-bold">Modelos Mais Vendidos</h2>
+            <p class="text-slate-400">Distribuição por modelo</p>
+          </div>
+          <canvas id="modelsChart"></canvas>
+        </div>
+      </section>
+
+      <!-- Table + Insights -->
+      <section class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+        <div class="xl:col-span-2 bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl overflow-hidden">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-2xl font-bold">Últimas Vendas</h2>
+            <button class="text-yellow-400 hover:text-yellow-300 transition">
+              Ver todas
+            </button>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-left">
+              <thead>
+                <tr class="border-b border-slate-800 text-slate-400">
+                  <th class="pb-4">Cliente</th>
+                  <th class="pb-4">Modelo</th>
+                  <th class="pb-4">Ano</th>
+                  <th class="pb-4">Cidade</th>
+                  <th class="pb-4">Valor</th>
+                  <th class="pb-4">Status</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-800">
+                <tr class="hover:bg-slate-800/40 transition">
+                  <td class="py-4">Carlos Mendes</td>
+                  <td class="py-4">911 Carrera</td>
+                  <td class="py-4">2024</td>
+                  <td class="py-4">São Paulo</td>
+                  <td class="py-4">R$ 890.000</td>
+                  <td class="py-4">
+                    <span class="bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-sm">
+                      Entregue
+                    </span>
+                  </td>
+                </tr>
+
+                <tr class="hover:bg-slate-800/40 transition">
+                  <td class="py-4">Fernanda Lima</td>
+                  <td class="py-4">Cayenne</td>
+                  <td class="py-4">2025</td>
+                  <td class="py-4">Santos</td>
+                  <td class="py-4">R$ 620.000</td>
+                  <td class="py-4">
+                    <span class="bg-yellow-500/20 text-yellow-400 px-3 py-1 rounded-full text-sm">
+                      Em produção
+                    </span>
+                  </td>
+                </tr>
+
+                <tr class="hover:bg-slate-800/40 transition">
+                  <td class="py-4">Ricardo Alves</td>
+                  <td class="py-4">Macan</td>
+                  <td class="py-4">2023</td>
+                  <td class="py-4">Curitiba</td>
+                  <td class="py-4">R$ 430.000</td>
+                  <td class="py-4">
+                    <span class="bg-blue-500/20 text-blue-400 px-3 py-1 rounded-full text-sm">
+                      Faturado
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl">
+          <h2 class="text-2xl font-bold mb-6">Insights IA</h2>
+
+          <div class="space-y-5">
+            <div class="bg-slate-800 rounded-2xl p-4 border border-slate-700">
+              <p class="text-sm text-slate-400 mb-2">Modelo em alta</p>
+              <h3 class="font-bold text-lg">911 Carrera</h3>
+              <p class="text-sm text-slate-300 mt-2">
+                Crescimento de 23% nas vendas comparado ao trimestre anterior.
+              </p>
+            </div>
+
+            <div class="bg-slate-800 rounded-2xl p-4 border border-slate-700">
+              <p class="text-sm text-slate-400 mb-2">Melhor vendedor</p>
+              <h3 class="font-bold text-lg">André Martins</h3>
+              <p class="text-sm text-slate-300 mt-2">
+                Responsável por R$ 2,4M em vendas no último mês.
+              </p>
+            </div>
+
+            <div class="bg-slate-800 rounded-2xl p-4 border border-slate-700">
+              <p class="text-sm text-slate-400 mb-2">Região destaque</p>
+              <h3 class="font-bold text-lg">São Paulo</h3>
+              <p class="text-sm text-slate-300 mt-2">
+                Representa 42% de todo o faturamento consolidado.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const salesChart = document.getElementById('salesChart');
+
+    new Chart(salesChart, {
+      type: 'line',
+      data: {
+        labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+        datasets: [{
+          label: 'Faturamento (R$)',
+          data: [820, 950, 1100, 980, 1300, 1450, 1500, 1620, 1700, 1850, 1950, 2200],
+          borderColor: '#eab308',
+          backgroundColor: 'rgba(234,179,8,0.2)',
+          fill: true,
+          tension: 0.4,
+          borderWidth: 3
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            labels: {
+              color: '#fff'
+            }
+          }
+        },
+        scales: {
+          x: {
+            ticks: {
+              color: '#94a3b8'
+            },
+            grid: {
+              color: 'rgba(255,255,255,0.05)'
+            }
+          },
+          y: {
+            ticks: {
+              color: '#94a3b8'
+            },
+            grid: {
+              color: 'rgba(255,255,255,0.05)'
+            }
+          }
+        }
+      }
+    });
+
+    const modelsChart = document.getElementById('modelsChart');
+
+    new Chart(modelsChart, {
+      type: 'doughnut',
+      data: {
+        labels: ['911', 'Cayenne', 'Macan', 'Panamera', 'Taycan'],
+        datasets: [{
+          data: [35, 25, 18, 12, 10],
+          backgroundColor: [
+            '#eab308',
+            '#f59e0b',
+            '#fb923c',
+            '#64748b',
+            '#334155'
+          ],
+          borderWidth: 0
+        }]
+      },
+      options: {
+        plugins: {
+          legend: {
+            labels: {
+              color: '#fff'
+            }
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
